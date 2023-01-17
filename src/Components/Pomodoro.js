@@ -62,7 +62,7 @@ const Pomodoro = () => {
     <>
       <div className="timer w-full h-20">
         <div className="timer__time w-full h-full flex justify-center items-center mt-5">
-          <h1 className="text-5xl">{timer}</h1>
+          <h1 className="text-5xl text-white">{timer}</h1>
         </div>
       </div>
       <div className="timer__buttons w-full h-20 flex justify-center items-center">

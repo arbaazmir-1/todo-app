@@ -127,8 +127,9 @@ const HomePage = () => {
           </div>
           <div className="tasksList w-3/4 h-full flex flex-col items-center overflow-y-scroll">
             {loading && !error ? (
-              <div className="w-full h-full flex justify-center items-center">
-                <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-12 w-12 mb-4"></div>
+              <div className="w-full h-full flex flex-col justify-center items-center">
+                <div className="loader ease-linear rounded-full border-8 border-t-8 border-cyan-200 h-12 w-12 mb-4 animate-pulse"></div>
+                <p>Loading</p>
               </div>
             ) : (
               tasks?.map((task, index) => {
