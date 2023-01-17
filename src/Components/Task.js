@@ -1,8 +1,21 @@
 import React from "react";
-
-const Task = ({ task }) => {
+import { useState } from "react";
+const Task = ({ task, deleteTask, updateTask }) => {
+  const [taskUpdate, setUpdateTask] = useState(false);
+  const [taskName, setTaskName] = useState(task.task);
+  const itemDelete = async () => {
+    deleteTask(task.id);
+  };
+  const update = () => {
+    if (taskName === "") {
+      alert("Please enter a task");
+    } else {
+      updateTask(task.id, taskName);
+      setUpdateTask(false);
+    }
+  };
   return (
-    <div className="task w-3/4 bg-yellow-50 h-20 flex flex-row items-center justify-between rounded shadow m-2">
+    <div className="task w-full bg-cyan-50 h-20 flex flex-row items-center justify-between rounded shadow m-2 hover:shadow-xl transition-shadow">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -17,14 +30,43 @@ const Task = ({ task }) => {
           d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
         />
       </svg>
-      <p className="w-3/4 h-full flex items-center text-2xl">{task}</p>
+      {taskUpdate ? (
+        <>
+          <input
+            type="text"
+            className="w-2/4 h-10 p-5 flex items-center text-2xl outline-none"
+            value={taskName}
+            onChange={(e) => {
+              setTaskName(e.target.value);
+            }}
+          />
+          <button
+            className="bg-green-600 text-white h-14 rounded-md hover:bg-green-700 transition-colors w-1/4"
+            onClick={() => {
+              update();
+            }}
+          >
+            Update
+          </button>
+        </>
+      ) : (
+        <p
+          className="w-3/4 h-full flex items-center text-2xl"
+          onDoubleClick={() => {
+            setUpdateTask(true);
+          }}
+        >
+          {task.task}
+        </p>
+      )}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-10 h-10 m-5"
+        className="w-10 h-10 m-5 hover:shadow-sm transition-shadow cursor-pointer"
+        onClick={itemDelete}
       >
         <path
           strokeLinecap="round"

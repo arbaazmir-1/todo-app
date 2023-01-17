@@ -1,9 +1,19 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { db } from "../firebase";
-import { collection, addDoc, setDoc, doc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  orderBy,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { async } from "@firebase/util";
 import Task from "../Components/Task";
+import { useNavigate } from "react-router-dom";
+import Pomodoro from "../Components/Pomodoro";
 
 const HomePage = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -13,33 +23,79 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [isDataFetched, setDataFetched] = useState(false);
+  const [newTaskLoading, setNewTaskLoading] = useState(false);
+  const navigate = useNavigate();
 
   const addTasks = async () => {
     if (!task) {
       alert("Please fill the field");
     } else {
       try {
-        setTasks((prev) => [...prev, task]);
+        //create a temporary id
+        const id = Math.floor(Math.random() * 100000000000000000000000000000);
+        setTasks((prev) => [{ id: id, task: task }, ...prev]);
+        setNewTaskLoading(true);
         const docRef = await addDoc(collection(db, user.uid), {
           task: task,
         });
+
+        setTask("");
+        setNewTaskLoading(false);
+        //delete the temporary id and replace it with the id from firebase
+        const newTasks = tasks.filter((task) => task.id !== id);
+        setTasks((prev) => [{ id: docRef.id, task: task }, ...newTasks]);
       } catch (e) {
+        setNewTaskLoading(false);
         console.log(e);
       }
     }
+  };
+  const deleteTaskFromArray = async (id) => {
+    const newTasks = tasks.filter((task) => task.id !== id);
+    setTasks(newTasks);
+    const deleted = await deleteDoc(doc(db, user.uid, id));
+    console.log(deleted);
   };
   const getData = async () => {
     setLoading(true);
     setTasks([]);
 
-    const querySnapshot = await getDocs(collection(db, user.uid));
+    const querySnapshot = await getDocs(
+      collection(db, user.uid),
+      orderBy("createdAt", "desc")
+    );
     querySnapshot.forEach((doc) => {
-      setTasks((prev) => [...prev, doc.data().task]);
+      setTasks((prev) => [...prev, { id: doc.id, task: doc.data().task }]);
     });
     setLoading(false);
   };
 
+  const updateTodo = async (id, todo) => {
+    try {
+      //update the task in the array
+
+      const newTasks = tasks.map((task) => {
+        if (task.id === id) {
+          return { id: id, task: todo };
+        } else {
+          return task;
+        }
+      });
+      setTasks(newTasks);
+
+      const docRef = doc(db, user.uid, id);
+      await updateDoc(docRef, {
+        task: todo,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
     getData();
   }, []);
 
@@ -63,29 +119,50 @@ const HomePage = () => {
               className="
                 ml-5 bg-cyan-600 text-white h-14 rounded-md hover:bg-cyan-700 transition-colors w-1/4
             "
+              disabled={newTaskLoading}
               onClick={addTasks}
             >
-              Add
+              {newTaskLoading ? "Adding..." : "Add"}
             </button>
           </div>
           <div className="tasksList w-3/4 h-full flex flex-col items-center overflow-y-scroll">
-            {loading ? (
+            {loading && !error ? (
               <div className="w-full h-full flex justify-center items-center">
                 <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-12 w-12 mb-4"></div>
               </div>
             ) : (
-              tasks.map((task, index) => {
-                return <Task key={index} task={task} />;
+              tasks?.map((task, index) => {
+                return (
+                  <Task
+                    key={index}
+                    task={task}
+                    deleteTask={deleteTaskFromArray}
+                    updateTask={updateTodo}
+                  />
+                );
               })
+            )}
+            {tasks.length === 0 && !loading && (
+              <div className="w-full h-full flex justify-center items-center">
+                <h1 className="text-2xl text-gray-500">No Tasks</h1>
+              </div>
             )}
           </div>
         </div>
 
-        <div className="pomodoro w-1/4 h-full bg-fuchsia-300"></div>
+        <div className="pomodoro w-1/4 h-full bg-cyan-500">
+          <Pomodoro />
+        </div>
       </div>
       {/* fixed button to logout   */}
       <div className="fixed bottom-0 right-0 m-5">
-        <button className="bg-cyan-600 text-white px-4 py-2 rounded-md hover:bg-cyan-700 transition-colors">
+        <button
+          className="bg-white text-black px-4 py-2 rounded-md hover:bg-cyan-700 transition-colors"
+          onClick={() => {
+            localStorage.removeItem("user");
+            navigate("/");
+          }}
+        >
           Logout
         </button>
       </div>

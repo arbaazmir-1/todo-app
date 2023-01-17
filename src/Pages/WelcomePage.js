@@ -34,6 +34,7 @@ const WelcomePage = () => {
           console.log(user);
           setLoading(false);
           localStorage.setItem("user", JSON.stringify(user));
+          navigate("/home");
           // ...
         })
         .catch((error) => {
@@ -104,7 +105,7 @@ const WelcomePage = () => {
             </label>
             <div class="mt-1 flex rounded-md shadow-sm">
               <input
-                type="text"
+                type="password"
                 name="password"
                 id="password"
                 class="mt-1 block w-full h-14 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
@@ -174,7 +175,7 @@ const WelcomePage = () => {
             </label>
             <div class="mt-1 flex rounded-md shadow-sm">
               <input
-                type="text"
+                type="password"
                 name="password"
                 id="password"
                 class="mt-1 block w-full h-14 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1"
