@@ -1,5 +1,6 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import Timer from "../assets/timer.mp3";
 const Pomodoro = () => {
   const [timeMinutes, setTimeMinutes] = useState(25);
   const [timeSeconds, setTimeSeconds] = useState(0);
@@ -8,6 +9,7 @@ const Pomodoro = () => {
   const [timerOn, setTimerOn] = useState(false);
   const [timerPaused, setTimerPaused] = useState(false);
   const [timerFinish, setTimerFinished] = useState(false);
+  const audioRef = useRef(new Audio(Timer));
 
   const timerStarted = () => {
     setTimerOn(true);
@@ -33,6 +35,7 @@ const Pomodoro = () => {
     setTimerOn(false);
     setTimerPaused(false);
     setTimerFinished(true);
+    audioRef.current.play();
     setTimeMinutes(25);
     setTimeSeconds(0);
     setTimerExists(false);

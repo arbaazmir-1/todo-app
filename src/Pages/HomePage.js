@@ -101,31 +101,25 @@ const HomePage = () => {
 
   return (
     <div className="w-full h-screen flex flex-col justify-center">
-      <div className="w-full h-full flex flex-row justify-center">
-        <div className="tasks w-3/4 h-full  flex flex-col items-center">
-          <div
-            className="addTask
-              w-3/4 h-16 bg-white flex flex-row  items-center p-2 m-2 rounded shadow-md hover:shadow-lg transition-shadow"
-          >
+      <div className="w-full h-full flex flex-col justify-center lg:flex-row md:flex-row ">
+        <div className="tasks w-full h-full flex flex-col items-center lg:w-3/4 md:w-3/4">
+          <div className="addTask w-3/4 h-16 bg-white flex flex-row items-center p-2 m-10 rounded shadow-md hover:shadow-lg transition-shadow duration-300">
             <input
               type="text"
               placeholder="Add Task"
-              className="
-                w-3/4 h-14 bg-white rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1 outline-none"
+              className="w-3/4 h-14 bg-white rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-1 outline-none"
               value={task}
               onChange={(e) => setTask(e.target.value)}
             />
             <button
-              className="
-                ml-5 bg-cyan-600 text-white h-14 rounded-md hover:bg-cyan-700 transition-colors w-1/4
-            "
+              className="ml-5 bg-cyan-600 text-white h-14 rounded-md hover:bg-cyan-700 transition-colors w-1/4"
               disabled={newTaskLoading}
               onClick={addTasks}
             >
               {newTaskLoading ? "Adding..." : "Add"}
             </button>
           </div>
-          <div className="tasksList w-3/4 h-full flex flex-col items-center overflow-y-scroll">
+          <div className="tasksList w-full h-full flex flex-col items-center overflow-y-scroll lg:w-3/4 md:w-3/4">
             {loading && !error ? (
               <div className="w-full h-full flex flex-col justify-center items-center">
                 <div className="loader ease-linear rounded-full border-8 border-t-8 border-cyan-200 h-12 w-12 mb-4 animate-pulse"></div>
@@ -151,7 +145,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="pomodoro w-1/4 h-full bg-cyan-500">
+        <div className="pomodoro w-full h-full bg-cyan-500 lg:w-1/4 md:w-1/4 sm:w-full">
           <Pomodoro />
         </div>
       </div>

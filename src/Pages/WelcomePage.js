@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendEmailVerification,
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
@@ -34,7 +35,9 @@ const WelcomePage = () => {
           console.log(user);
           setLoading(false);
           localStorage.setItem("user", JSON.stringify(user));
+
           navigate("/home");
+
           // ...
         })
         .catch((error) => {
@@ -76,6 +79,20 @@ const WelcomePage = () => {
 
   return (
     <div className="w-full h-screen flex flex-row justify-center">
+      {showEmailVerification && (
+        <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-4 rounded-lg shadow-md">
+            <h2 className="text-lg font-medium">Email Verification</h2>
+            <p className="text-gray-600">Please Verify Your Email!</p>
+            <button
+              className="bg-red-500 text-white py-2 px-4 rounded-lg mt-4 hover:bg-red-600"
+              onClick={() => showEmailVerification(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
       <div className="w-1/2 h-screen flex flex-col justify-center items-center">
         <h1 className="text-5xl mb-10 text-cyan-600 ">Task Mate</h1>
         {loading && <p className="text-gray-500">Loading...</p>}

@@ -22,7 +22,7 @@ const Task = ({ task, deleteTask, updateTask }) => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-10 h-10 m-5"
+        className="w-10 h-10 m-5 cursor-pointer hover:text-green-600 transition-colors "
       >
         <path
           strokeLinecap="round"
