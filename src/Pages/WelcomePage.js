@@ -9,6 +9,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const WelcomePage = () => {
   const [showLogin, setShowLogin] = useState(true);
@@ -146,8 +147,21 @@ const WelcomePage = () => {
             >
               Register
             </button>
-            <p className="mt-5 text-gray-500 cursor-pointer hover:text-gray-700 transition-colors text-center">
+            <Link
+              to="/pomodoro"
+              className="mt-5 text-gray-500 cursor-pointer hover:text-gray-700 transition-colors text-center"
+            >
               Use Pomodoro Only
+            </Link>
+            <p className="text-gray-500 text-center mt-3">
+              Created With <span className="text-red-500">❤</span> By{" "}
+              <a
+                href="https://abdullahibnshahin.com"
+                className="text-blue-500 hover:text-blue-700 transition-colors"
+                target="_blank"
+              >
+                Abdullah Ibn Shahin
+              </a>
             </p>
           </div>
         ) : (
