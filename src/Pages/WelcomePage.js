@@ -94,7 +94,7 @@ const WelcomePage = () => {
           </div>
         </div>
       )}
-      <div className="w-1/2 h-screen flex flex-col justify-center items-center">
+      <div className="w-full h-screen m-5 flex flex-col justify-center items-center lg:w-1/2 md:w-1/2 lg:m-0 md:m-0">
         <h1 className="text-5xl mb-10 text-cyan-600 ">Task Mate</h1>
         {loading && <p className="text-gray-500">Loading...</p>}
         {error && !loading && <p className="text-red-500">{error}</p>}
@@ -231,6 +231,22 @@ const WelcomePage = () => {
             >
               Login
             </button>
+            <Link
+              to="/pomodoro"
+              className="mt-5 text-gray-500 cursor-pointer hover:text-gray-700 transition-colors text-center"
+            >
+              Use Pomodoro Only
+            </Link>
+            <p className="text-gray-500 text-center mt-3">
+              Created With <span className="text-red-500">❤</span> By{" "}
+              <a
+                href="https://abdullahibnshahin.com"
+                className="text-blue-500 hover:text-blue-700 transition-colors"
+                target="_blank"
+              >
+                Abdullah Ibn Shahin
+              </a>
+            </p>
           </div>
         )}
       </div>

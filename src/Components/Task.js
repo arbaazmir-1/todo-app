@@ -48,6 +48,14 @@ const Task = ({ task, deleteTask, updateTask }) => {
           >
             Update
           </button>
+          <button
+            className="bg-red-600 text-white h-14 rounded-md hover:bg-red-700 transition-colors w-1/4 m-1"
+            onClick={() => {
+              setUpdateTask(false);
+            }}
+          >
+            Cancel
+          </button>
         </>
       ) : (
         <p
